@@ -16,7 +16,7 @@ for i in fs:
 
 visibleTrees = (len(treeGrid) * 2) + ((len(treeGrid[0]) - 2) * 2)
 # print(visibleTrees)
-
+#Part one
 for rows in range(len(treeGrid)):
     for col in range(len(treeGrid[rows])):
         # print(treeGrid[rows][col], '.', col, rows, sep='.', end=' ')
@@ -38,4 +38,62 @@ for rows in range(len(treeGrid)):
                 visibleTrees += 1
 
 
+#Part two
+
+highestViewingScore = 0
+
+viewingScore = 1
+for rows in range(len(treeGrid)):
+    for col in range(len(treeGrid[rows])):
+        colList = []
+        for j in range(len(treeGrid)):
+            colList.append(treeGrid[j][col])
+
+        directionScore = 0
+        #Contains left and up directions
+        reverseDirec = [treeGrid[rows][0:col], colList[0:rows]]
+        #Contains right and down directions
+        direc = [treeGrid[rows][col + 1:], colList[rows + 1:]]
+
+        for x in reverseDirec:
+            directionScore = 0
+            if (x == []): 
+                viewingScore = 0
+                break
+            for i in list(reversed(x)):
+                directionScore += 1
+
+                if treeGrid[rows][col] <= i:
+                    break
+            viewingScore *= directionScore
+
+
+        for x in direc:
+            directionScore = 0
+            if (x == []):
+                viewingScore = 0
+
+                break
+
+            for i in (x):
+                directionScore += 1
+
+                if treeGrid[rows][col] <= i:
+                    break
+            viewingScore *= directionScore
+
+
+        # print (directionScore,end='')
+        # for i in (right):
+        #     directionScore += 1
+        #     if treeGrid[rows][col] <= i:
+        #         viewingScore += directionScore
+        #         directionScore = 0
+        #         break
+        if (viewingScore > highestViewingScore): highestViewingScore = viewingScore
+        print(str(viewingScore) + ' ', end='')
+        viewingScore = 1
+    print()
+
+print(highestViewingScore)
 print(visibleTrees)
