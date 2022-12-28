@@ -1,4 +1,4 @@
-fs = open('test.txt', 'r')
+fs = open('input.txt', 'r')
 
 termOut = fs.readlines()
 for i in range(len(termOut)): termOut[i] = termOut[i].rstrip()
@@ -59,14 +59,33 @@ for i in termOut:
 
 # print(root)
 # print(root.children['a'])
+#Part one - running total
 runningTotal = 0
+
+#Part Two - unused space
+unusedSpace = 70000000 - root.getSize()
+makeupSpace = 30000000 - unusedSpace
+candidateDir = []
+
 def printTree(root, level=0):
     print("  " * level, root.name)
     if (root.isDirectory):
+        #Part one
         if (root.getSize() <= 100000):
             global runningTotal 
             runningTotal += root.getSize()
+
+        #Part two
+        if (root.getSize() >= makeupSpace):
+            candidateDir.append(root.getSize())
+
+    
     for name, child in root.children.items():
         printTree(child, level + 1)
 printTree(root)
+
+#Part one
 print(runningTotal)
+
+#Part two
+print(min(candidateDir))
