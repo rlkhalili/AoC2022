@@ -1,22 +1,12 @@
 import math
 import re
 
+
 fs = open('input.txt', 'r').read().split('\n\n')
 monkeys = [i.split('\n') for i in fs]
 for i in range(len(monkeys)):
     for j in range(len(monkeys[i])):
         monkeys[i][j] = monkeys[i][j].strip()
-
-
-class Monkey:
-    def __init__(self, items, operation, test) -> None:
-        self.items = items
-        #String of the operation to be called with exec() function
-        self.operation = operation
-        exec(operation)
-        self.test = test
-    def __str__(self) -> str:
-        return self.items, self.operation, self.test
 
 
 
@@ -40,24 +30,47 @@ for row in monkeys:
     tests.append(t)
 
 inspections = [0 for i in range(len(monkeys))]
-    
+
+divisors = [i[0] for i in tests]
+a = 1
+for i in divisors:
+    a *= i
+print(a)    
+
+
 print(itemBags)
 #Applies the each monkeys respective operations to its contents 
-for rounds in range(20):
+for rounds in range(10000):
+
     for bag in range(len(itemBags)):
+
         while not (itemBags[bag] == []):
+
             inspections[bag] += 1
+
+
             operate = None
             exec(operations[bag])
-            itemBags[bag][0] = math.floor(operate(itemBags[bag][0]) / 3)
+            # Part one
+            # itemBags[bag][0] = math.floor(operate(itemBags[bag][0]) / 3)
+
+            itemBags[bag][0] = (operate(itemBags[bag][0]))
             # print(itemBags[bag][0], end=' ')
+            
+            # if (itemBags[bag][0] % a == 0):
+            #     itemBags[bag][0] = itemBags[bag][0] // a
+            #     print(rounds)
+            itemBags[bag][0] = itemBags[bag][0] % a
+
             if (itemBags[bag][0] % tests[bag][0] == 0):
                 itemBags[tests[bag][1]].append(itemBags[bag][0])
             else:
                 itemBags[tests[bag][2]].append(itemBags[bag][0])
             del itemBags[bag][0]
 
+
         # print()
+    
 
 
 
